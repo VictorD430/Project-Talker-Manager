@@ -8,4 +8,11 @@ const getTalker = async () => {
   return talker;
 };
 
-module.exports = { getTalker };
+const getTalkerById = async (id) => {
+  const getAll = await getTalker();
+  const allId = JSON.parse(getAll);
+  const findId = allId.find((talker) => talker.id === Number(id));
+  return findId;
+};
+
+module.exports = { getTalker, getTalkerById };
