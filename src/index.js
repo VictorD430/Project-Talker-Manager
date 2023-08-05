@@ -1,5 +1,11 @@
 const express = require('express');
+const crypto = require('crypto'); // gerador de tokens
 const { getTalker, getTalkerById } = require('./talkerGet');
+
+const {
+  validateEmail,
+  validatePassword,
+} = require('./middlewares/validation');
 
 const app = express();
 app.use(express.json());
@@ -22,6 +28,12 @@ app.get('/talker/:id', async (_request, response) => {
     return;
   }
   response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+});
+
+// req 3
+app.post('/login', validateEmail, validatePassword, async (_request, response) => {
+  const tokenGen = await crypto.randomBytes(8).toString('hex');
+  response.status(HTTP_OK_STATUS).json({ token: `${tokenGen}` });
 });
 
 // não remova esse endpoint, e para o avaliador funcionar
