@@ -5,7 +5,14 @@ const { getTalker, getTalkerById } = require('./talkerGet');
 const {
   validateEmail,
   validatePassword,
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateRate,
+  validateWatchedAt,
 } = require('./middlewares/validation');
+const { talkerAdd } = require('./talkerAdd');
 
 const app = express();
 app.use(express.json());
@@ -30,11 +37,21 @@ app.get('/talker/:id', async (_request, response) => {
   response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-// req 3
+// req 3 e req 4
 app.post('/login', validateEmail, validatePassword, async (_request, response) => {
   const tokenGen = await crypto.randomBytes(8).toString('hex');
   response.status(HTTP_OK_STATUS).json({ token: `${tokenGen}` });
 });
+
+// req 5
+app.post('/talker',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateRate,
+  validateWatchedAt,
+  talkerAdd);
 
 // não remova esse endpoint, e para o avaliador funcionar
 // iniciando projeto
