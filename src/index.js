@@ -13,6 +13,7 @@ const {
   validateWatchedAt,
 } = require('./middlewares/validation');
 const { talkerAdd } = require('./talkerAdd');
+const { talkerPut } = require('./talkerPut');
 
 const app = express();
 app.use(express.json());
@@ -52,6 +53,23 @@ app.post('/talker',
   validateRate,
   validateWatchedAt,
   talkerAdd);
+
+// req 6
+app.put('/talker/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (request, response) => {
+    const { id } = request.params;
+    const putTalker = await talkerPut(id, request.body);
+    if (!putTalker) {
+      return response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    return response.status(200).json(putTalker);
+  });
 
 // não remova esse endpoint, e para o avaliador funcionar
 // iniciando projeto
