@@ -14,6 +14,7 @@ const {
 } = require('./middlewares/validation');
 const { talkerAdd } = require('./talkerAdd');
 const { talkerPut } = require('./talkerPut');
+const { talkerDel } = require('./talkerDel');
 
 const app = express();
 app.use(express.json());
@@ -70,6 +71,9 @@ app.put('/talker/:id',
     }
     return response.status(200).json(putTalker);
   });
+
+// req 7
+app.delete('/talker/:id', validateToken, talkerDel, async () => { });
 
 // não remova esse endpoint, e para o avaliador funcionar
 // iniciando projeto
