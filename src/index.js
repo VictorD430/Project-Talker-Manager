@@ -28,6 +28,16 @@ app.get('/talker', async (_request, response) => {
   response.status(HTTP_OK_STATUS).json(JSON.parse(talker));
 });
 
+// req 8
+app.get('/talker/search', validateToken, async (request, response) => {
+  const { q } = await request.query;
+  const data = await getTalker();
+  const talkers = JSON.parse(data);
+  const talkerFilter = talkers
+    .filter((talk) => talk.name.includes(q));
+  return response.status(HTTP_OK_STATUS).json(talkerFilter);
+});
+
 // req 2
 app.get('/talker/:id', async (_request, response) => {
   const { id } = _request.params;
@@ -55,7 +65,7 @@ app.post('/talker',
   validateWatchedAt,
   talkerAdd);
 
-// req 6
+  // req 6
 app.put('/talker/:id',
   validateToken,
   validateName,
@@ -73,7 +83,7 @@ app.put('/talker/:id',
   });
 
 // req 7
-app.delete('/talker/:id', validateToken, talkerDel, async () => { });
+app.delete('/talker/:id', validateToken, talkerDel, async () => {});
 
 // não remova esse endpoint, e para o avaliador funcionar
 // iniciando projeto
